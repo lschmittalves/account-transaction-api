@@ -1,44 +1,50 @@
 version: '3.7'
 services:
-  echo_app:
-    container_name: echo_demo
+  app:
+    container_name: app
     build: .
     ports:
-      - ${EXPOSE_PORT}:${PORT}
+      - ${PORT}:${PORT}
     restart: on-failure
     volumes:
       - ./:/app/
     depends_on:
-      - echo_mysql
+      - db
+      - cache
     env_file:
       - .env
     environment:
-      - DB_CONNECTION=${DB_HOST}:${DB_PORT}
-      - WAIT_HOSTS=${DB_HOST}:${DB_PORT}
-      - WAIT_BEFORE_HOSTS=15
+      - WAIT_HOSTS=${DB_HOST}:${DB_PORT},${REDIS_HOST}:${REDIS_PORT}
+      - WAIT_BEFORE_HOSTS=10
       - WAIT_SLEEP_INTERVAL=3
-    networks:
-      - echo-demo-stack
+    links:
+      - db
+      - cache
 
-  echo_mysql:
-    image: mysql:5.7
-    container_name: echo_db
-    ports:
-      - ${EXPOSE_DB_PORT}:${DB_PORT}
+  db:
+    image: postgres:14.1-alpine
+    restart: always
     environment:
-      - MYSQL_ROOT_HOST=${DB_HOST}
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
     volumes:
-      - database_mysql:/var/lib/mysql
+      - db:/var/lib/postgresql/data
+
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - cache:/data
     networks:
-      - echo-demo-stack
+      - main-stack
 
 volumes:
-  database_mysql:
-
-networks:
-  echo-demo-stack:
-    driver: bridge
+  db:
+    driver: local
+  cache:
+    driver: local
