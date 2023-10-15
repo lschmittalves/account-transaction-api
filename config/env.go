@@ -20,6 +20,11 @@ func getEnvInt(key string) int {
 
 func getEnvBool(key string) bool {
 	s := getEnvString(key)
+
+	if s == "" {
+		return false
+	}
+
 	v, err := strconv.ParseBool(s)
 	if err != nil {
 		panic(err)

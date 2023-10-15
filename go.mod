@@ -37,10 +37,13 @@ require (
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
+	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14 // indirect
 	github.com/swaggo/swag v1.16.1 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.1.0 // indirect
+	go.uber.org/multierr v1.11.0 // indirect
+	go.uber.org/zap v1.26.0 // indirect
 	golang.org/x/net v0.14.0 // indirect
 	golang.org/x/sys v0.11.0 // indirect
 	golang.org/x/text v0.12.0 // indirect

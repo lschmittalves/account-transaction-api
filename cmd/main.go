@@ -5,9 +5,13 @@ import (
 	"account-transaction-api/config"
 	"account-transaction-api/docs"
 	"fmt"
+	"go.uber.org/zap"
 )
 
-// @BasePath /
+func init() {
+	zap.ReplaceGlobals(zap.Must(zap.NewProduction()))
+}
+
 func main() {
 	cfg := config.NewConfig()
 
