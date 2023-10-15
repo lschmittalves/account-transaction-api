@@ -1,7 +1,11 @@
 # Overview
-It's an API Skeleton project based on Echo framework.
-Our aim is reducing development time on default features that you can meet very often when your work on API.
-There is a useful set of tools that described below. Feel free to contribute!
+This is an account transaction REST api implemented with echo framework.
+Accounts and transactions are store in a postgres database, and the clients are able to query and regiter new accounts.
+
+There is also an endpoint where the client can perform transactions to an account, this endpoint has a
+cache configured that locks each transaction with a small TTL in order to avoid duplications.
+
+
 
 ## What's inside:
 
@@ -111,4 +115,4 @@ Mocking db - https://github.com/selvatico/go-mocket
 Orm - https://github.com/jinzhu/gorm
 
 ## License
-The project is developed by [NIX Solutions](http://nixsolutions.com) Go team and distributed under [MIT LICENSE](https://github.com/nixsolutions/golang-echo-boilerplate/blob/master/LICENSE)
+The project is developed by [lschmittalves@gmail.com]() under [MIT LICENSE](https://github.com/nixsolutions/golang-echo-boilerplate/blob/master/LICENSE)
