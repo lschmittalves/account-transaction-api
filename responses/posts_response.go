@@ -1,7 +1,7 @@
 package responses
 
 import (
-	"echo-demo-project/models"
+	"account-transaction-api/models"
 )
 
 type PostResponse struct {

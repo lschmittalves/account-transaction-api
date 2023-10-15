@@ -1,12 +1,12 @@
 package handlers
 
 import (
-	"echo-demo-project/models"
-	"echo-demo-project/repositories"
-	"echo-demo-project/requests"
-	"echo-demo-project/responses"
-	s "echo-demo-project/server"
-	"echo-demo-project/services/user"
+	"account-transaction-api/models"
+	"account-transaction-api/repositories"
+	"account-transaction-api/requests"
+	"account-transaction-api/responses"
+	s "account-transaction-api/server"
+	"account-transaction-api/services/user"
 	"net/http"
 
 	"github.com/labstack/echo/v4"

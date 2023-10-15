@@ -1,8 +1,8 @@
 package post
 
 import (
-	"echo-demo-project/models"
-	"echo-demo-project/requests"
+	"account-transaction-api/models"
+	"account-transaction-api/requests"
 
 	"github.com/jinzhu/gorm"
 )

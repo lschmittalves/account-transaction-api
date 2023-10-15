@@ -1,7 +1,7 @@
 package user
 
 import (
-	"echo-demo-project/requests"
+	"account-transaction-api/requests"
 
 	"github.com/jinzhu/gorm"
 )

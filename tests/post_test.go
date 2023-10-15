@@ -1,11 +1,11 @@
 package tests
 
 import (
-	"echo-demo-project/requests"
-	"echo-demo-project/server"
-	"echo-demo-project/server/handlers"
-	"echo-demo-project/services/token"
-	"echo-demo-project/tests/helpers"
+	"account-transaction-api/requests"
+	"account-transaction-api/server"
+	"account-transaction-api/server/handlers"
+	"account-transaction-api/services/token"
+	"account-transaction-api/tests/helpers"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
@@ -65,7 +65,7 @@ func TestWalkPostsCrud(t *testing.T) {
 		Reply: helpers.MockReply{{"id": 1, "title": "title", "content": "content", "username": "Username"}},
 	}
 
-	cases := []helpers.TestCase {
+	cases := []helpers.TestCase{
 		{
 			"Create post success",
 			requestCreate,

@@ -1,9 +1,9 @@
 package application
 
 import (
-	"echo-demo-project/config"
-	"echo-demo-project/server"
-	"echo-demo-project/server/routes"
+	"account-transaction-api/config"
+	"account-transaction-api/server"
+	"account-transaction-api/server/routes"
 	"log"
 )
 

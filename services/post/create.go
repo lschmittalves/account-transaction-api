@@ -1,6 +1,6 @@
 package post
 
-import "echo-demo-project/models"
+import "account-transaction-api/models"
 
 func (postService *Service) Create(post *models.Post) {
 	postService.DB.Create(post)

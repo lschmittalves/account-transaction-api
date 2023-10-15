@@ -1,4 +1,4 @@
-module echo-demo-project
+module account-transaction-api
 
 go 1.20
 
@@ -14,7 +14,6 @@ require (
 	github.com/selvatico/go-mocket v1.0.7
 	github.com/stretchr/testify v1.8.4
 	github.com/swaggo/echo-swagger v1.0.0
-	github.com/swaggo/swag v1.16.1
 	golang.org/x/crypto v0.12.0
 )
 
@@ -39,6 +38,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
 	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14 // indirect
+	github.com/swaggo/swag v1.16.1 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.1.0 // indirect
 	golang.org/x/net v0.14.0 // indirect

@@ -1,9 +1,9 @@
 package routes
 
 import (
-	s "echo-demo-project/server"
-	"echo-demo-project/server/handlers"
-	"echo-demo-project/services/token"
+	s "account-transaction-api/server"
+	"account-transaction-api/server/handlers"
+	"account-transaction-api/services/token"
 	"fmt"
 
 	"github.com/labstack/echo/v4/middleware"

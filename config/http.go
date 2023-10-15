@@ -3,15 +3,13 @@ package config
 import "os"
 
 type HTTPConfig struct {
-	Host       string
-	Port       string
-	ExposePort string
+	Host string
+	Port string
 }
 
 func LoadHTTPConfig() HTTPConfig {
 	return HTTPConfig{
-		Host:       os.Getenv("HOST"),
-		Port:       os.Getenv("PORT"),
-		ExposePort: os.Getenv("EXPOSE_PORT"),
+		Host: os.Getenv("HOST"),
+		Port: os.Getenv("PORT"),
 	}
 }

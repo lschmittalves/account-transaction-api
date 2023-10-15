@@ -1,6 +1,6 @@
 package builders
 
-import "echo-demo-project/models"
+import "account-transaction-api/models"
 
 type UserBuilder struct {
 	email    string

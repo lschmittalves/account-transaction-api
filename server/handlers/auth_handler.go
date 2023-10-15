@@ -1,12 +1,12 @@
 package handlers
 
 import (
-	"echo-demo-project/models"
-	"echo-demo-project/repositories"
-	"echo-demo-project/requests"
-	"echo-demo-project/responses"
-	s "echo-demo-project/server"
-	tokenservice "echo-demo-project/services/token"
+	"account-transaction-api/models"
+	"account-transaction-api/repositories"
+	"account-transaction-api/requests"
+	"account-transaction-api/responses"
+	s "account-transaction-api/server"
+	tokenservice "account-transaction-api/services/token"
 	"fmt"
 	"net/http"
 

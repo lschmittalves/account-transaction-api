@@ -7,9 +7,9 @@ import (
 )
 
 type Config struct {
-	Auth AuthConfig
-	DB   DBConfig
-	HTTP HTTPConfig
+	DB    DBConfig
+	CACHE CacheConfig
+	HTTP  HTTPConfig
 }
 
 func NewConfig() *Config {
@@ -19,8 +19,8 @@ func NewConfig() *Config {
 	}
 
 	return &Config{
-		Auth: LoadAuthConfig(),
-		DB:   LoadDBConfig(),
-		HTTP: LoadHTTPConfig(),
+		CACHE: LoadCacheConfig(),
+		DB:    LoadDBConfig(),
+		HTTP:  LoadHTTPConfig(),
 	}
 }

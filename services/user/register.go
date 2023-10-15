@@ -1,8 +1,8 @@
 package user
 
 import (
-	"echo-demo-project/requests"
-	"echo-demo-project/server/builders"
+	"account-transaction-api/requests"
+	"account-transaction-api/server/builders"
 
 	"golang.org/x/crypto/bcrypt"
 )

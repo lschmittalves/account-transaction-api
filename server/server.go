@@ -1,8 +1,8 @@
 package server
 
 import (
-	"echo-demo-project/config"
-	"echo-demo-project/db"
+	"account-transaction-api/config"
+	"account-transaction-api/db"
 
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"

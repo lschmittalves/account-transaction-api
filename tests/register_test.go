@@ -1,10 +1,10 @@
 package tests
 
 import (
-	"echo-demo-project/requests"
-	"echo-demo-project/server"
-	"echo-demo-project/server/handlers"
-	"echo-demo-project/tests/helpers"
+	"account-transaction-api/requests"
+	"account-transaction-api/server"
+	"account-transaction-api/server/handlers"
+	"account-transaction-api/tests/helpers"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 	"net/http"
@@ -46,7 +46,7 @@ func TestWalkRegister(t *testing.T) {
 					Email:    "name@test.com",
 					Password: "password",
 				},
-				Name:     "",
+				Name: "",
 			},
 			handlerFunc,
 			nil,
@@ -63,7 +63,7 @@ func TestWalkRegister(t *testing.T) {
 					Email:    "name@test.com",
 					Password: "passw",
 				},
-				Name:     "name",
+				Name: "name",
 			},
 			handlerFunc,
 			nil,
@@ -80,7 +80,7 @@ func TestWalkRegister(t *testing.T) {
 					Email:    "duplicated@test.com",
 					Password: "password",
 				},
-				Name:     "Another Name",
+				Name: "Another Name",
 			},
 			handlerFunc,
 			&helpers.QueryMock{

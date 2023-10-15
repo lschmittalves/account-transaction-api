@@ -1,8 +1,8 @@
 package token
 
 import (
-	"echo-demo-project/config"
-	"echo-demo-project/models"
+	"account-transaction-api/config"
+	"account-transaction-api/models"
 
 	"github.com/dgrijalva/jwt-go"
 )

@@ -1,14 +1,14 @@
 package tests
 
 import (
-	"echo-demo-project/config"
-	"echo-demo-project/models"
-	"echo-demo-project/requests"
-	"echo-demo-project/responses"
-	"echo-demo-project/server"
-	"echo-demo-project/server/handlers"
-	"echo-demo-project/services/token"
-	"echo-demo-project/tests/helpers"
+	"account-transaction-api/config"
+	"account-transaction-api/models"
+	"account-transaction-api/requests"
+	"account-transaction-api/responses"
+	"account-transaction-api/server"
+	"account-transaction-api/server/handlers"
+	"account-transaction-api/services/token"
+	"account-transaction-api/tests/helpers"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -36,7 +36,7 @@ func TestWalkAuth(t *testing.T) {
 		Reply: helpers.MockReply{{"id": helpers.UserId, "email": "name@test.com", "name": "User Name", "password": encryptedPassword}},
 	}
 
-	cases := []helpers.TestCase {
+	cases := []helpers.TestCase{
 		{
 			"Auth success",
 			request,
@@ -124,14 +124,14 @@ func TestWalkRefresh(t *testing.T) {
 	notExistUser.ID = helpers.UserId + 1
 	notExistToken, _ := tokenService.CreateRefreshToken(&notExistUser)
 
-	invalidToken := validToken[1:len(validToken)-1]
+	invalidToken := validToken[1 : len(validToken)-1]
 
 	commonMock := &helpers.QueryMock{
 		Query: `SELECT * FROM "users"  WHERE "users"."deleted_at" IS NULL AND (("users"."id" = 1))`,
 		Reply: helpers.MockReply{{"id": helpers.UserId, "name": "User Name"}},
 	}
 
-	cases := []helpers.TestCase {
+	cases := []helpers.TestCase{
 		{
 			"Refresh success",
 			request,

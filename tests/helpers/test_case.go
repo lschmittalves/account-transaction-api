@@ -1,7 +1,7 @@
 package helpers
 
 import (
-	"echo-demo-project/server"
+	"account-transaction-api/server"
 	"encoding/json"
 	"github.com/labstack/echo/v4"
 	mocket "github.com/selvatico/go-mocket"
@@ -11,7 +11,7 @@ import (
 
 const UserId = 1
 
-type TestCase struct{
+type TestCase struct {
 	TestName    string
 	Request     Request
 	RequestBody interface{}

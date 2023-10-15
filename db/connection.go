@@ -1,8 +1,8 @@
 package db
 
 import (
-	"echo-demo-project/config"
-	"echo-demo-project/db/seeders"
+	"account-transaction-api/config"
+	"account-transaction-api/db/seeders"
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql" // nolint

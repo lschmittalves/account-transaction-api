@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"echo-demo-project/models"
+	"account-transaction-api/models"
 
 	"github.com/jinzhu/gorm"
 )

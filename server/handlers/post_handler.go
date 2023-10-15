@@ -1,13 +1,13 @@
 package handlers
 
 import (
-	"echo-demo-project/models"
-	"echo-demo-project/repositories"
-	"echo-demo-project/requests"
-	"echo-demo-project/responses"
-	s "echo-demo-project/server"
-	postservice "echo-demo-project/services/post"
-	"echo-demo-project/services/token"
+	"account-transaction-api/models"
+	"account-transaction-api/repositories"
+	"account-transaction-api/requests"
+	"account-transaction-api/responses"
+	s "account-transaction-api/server"
+	postservice "account-transaction-api/services/post"
+	"account-transaction-api/services/token"
 	"net/http"
 	"strconv"
 
