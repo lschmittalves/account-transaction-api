@@ -9,7 +9,7 @@ import (
 )
 
 type Cache interface {
-	SetEx(ctx context.Context, pattern, key string) bool
+	SetNx(ctx context.Context, pattern, key string) bool
 }
 
 type Wrapper struct {
@@ -31,11 +31,11 @@ func Init(cfg *config.Config) *Wrapper {
 	return cache
 }
 
-func (c *Wrapper) SetEx(ctx context.Context, pattern, id string) bool {
+func (c *Wrapper) SetNx(ctx context.Context, pattern, id string) bool {
 
 	ttl := time.Duration(c.TTLs[pattern]) * time.Millisecond
 	key := fmt.Sprintf(pattern, id)
-	r := c.client.SetEx(ctx, key, key, ttl)
+	r := c.client.SetNX(ctx, key, key, ttl)
 
-	return r.Err() == nil
+	return r.Val()
 }

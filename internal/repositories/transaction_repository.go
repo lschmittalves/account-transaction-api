@@ -36,7 +36,7 @@ func (r *TransactionRepository) Add(t *models.Transaction) error {
 	ctx := context.Background()
 	cacheId := fmt.Sprintf("%s/%s/%d", t.AccountId, t.OperationTypeId, t.Amount)
 
-	if !r.cache.SetEx(ctx, cache.TransactionLockKeyPattern, cacheId) {
+	if !r.cache.SetNx(ctx, cache.TransactionLockKeyPattern, cacheId) {
 		return fmt.Errorf("transaction %s has been sent allready", cacheId)
 	}
 

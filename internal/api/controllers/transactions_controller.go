@@ -27,7 +27,7 @@ func NewTransactionsController(echo *echo.Echo, service transactionService.Servi
 // @Param params body requests.RegisterTransactionRequest true "Transaction data"
 // @Success 201 {object} responses.Data
 // @Failure 400 {object} responses.Error
-// @Router /accounts [post]
+// @Router /transactions [post]
 func (controller *TransactionsController) Post(c echo.Context) error {
 	registerTransactionRequest := new(requests.RegisterTransactionRequest)
 

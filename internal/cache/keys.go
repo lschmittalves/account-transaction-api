@@ -1,5 +1,5 @@
 package cache
 
 const (
-	TransactionLockKeyPattern = "TRANSACTION_LOCK:s%"
+	TransactionLockKeyPattern = "TRANSACTION_LOCK:%s"
 )
