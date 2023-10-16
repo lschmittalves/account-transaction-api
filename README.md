@@ -9,7 +9,7 @@ cache configured that locks each transaction with a small TTL in order to avoid 
 ## What's inside:
 
 - Create new accounts and get by ID
-- Create new transactions and get by ID
+- Register money transactions
 - Seed default Operation Types
 - Postgres integration
 - Redis integration
@@ -21,8 +21,8 @@ cache configured that locks each transaction with a small TTL in order to avoid 
 ## Usage
 1. Run your application using the command in the terminal:
     `docker-compose up` or `make run-docker` 
-2. Browse to localhost:7788/swagger/index.html. You will see Swagger 2.0 API documents.
-3. Using the API documentation, make requests to register an account and registering new transactions.
+2. Browse to localhost:7788/swagger/index.html. You will be able to access the Swagger 2.0 API documents.
+3. Using the API documentation, make requests to register an account and register transactions.
 4. These are the default operation types that can be used to register the new transactions
 ```
 {
@@ -56,7 +56,7 @@ cache configured that locks each transaction with a small TTL in order to avoid 
 
 ### Create Transaction
 
-### Get Transaction By Id
+`curl -X 'POST' \ 'http://localhost:7788/transactions' \ -H 'accept: application/json' \ -H 'Content-Type: application/json' \ -d '{ "account_id": "0123b568-dcb9-4409-b838-76a515d36c9c", "amount": 40, "operation_type_id": "fce2fa7e-a698-40c8-a765-268d13190329" }'`
 
 ## License
 The project is developed by [lschmittalves@gmail.com]() under [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
