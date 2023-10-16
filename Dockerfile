@@ -15,7 +15,6 @@ ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.7.3/wait
 RUN chmod +x /wait
 
 #Command to run the executable
-CMD swag init -g cmd/main.go\
+CMD swag init -g cmd/api/main.go\
   && /wait \
-  && go run migrations/entry.go --verbose \
   && CompileDaemon --build="go build cmd/api/main.go"  --command="./main" --color

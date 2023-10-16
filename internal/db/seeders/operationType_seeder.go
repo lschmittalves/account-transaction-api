@@ -3,9 +3,9 @@ package seeders
 import (
 	"account-transaction-api/internal/models"
 	"errors"
-	"fmt"
+	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
-	uuid "github.com/satori/go.uuid"
+	"log"
 )
 
 type OperationTypeSeeder struct {
@@ -34,13 +34,12 @@ func (seeder *OperationTypeSeeder) SetDefaultOperationTypes() {
 
 	for key, value := range operations {
 		op := models.OperationType{}
-		r := seeder.DB.First(&op, key)
-
+		r := seeder.DB.Where("id = ? ", key).First(op)
 		if errors.Is(r.Error, gorm.ErrRecordNotFound) {
-			op.ID = uuid.FromStringOrNil(key)
+			op.Id, _ = uuid.Parse(key)
 			op.Description = value["description"]
 
-			fmt.Printf("seeding operation type %v", op)
+			log.Printf("seeding operation type %v", op)
 
 			seeder.DB.Create(&op)
 		}

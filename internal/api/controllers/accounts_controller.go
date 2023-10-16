@@ -4,9 +4,9 @@ import (
 	"account-transaction-api/internal/api/requests"
 	"account-transaction-api/internal/api/responses"
 	accountService "account-transaction-api/internal/services/account"
+	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
-	uuid "github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -26,7 +26,7 @@ func NewAccountsController(echo *echo.Echo, db *gorm.DB) *AccountsController {
 // @Tags Account Actions
 // @Accept json
 // @Produce json
-// @Param params body requests.CreateAccountRequest
+// @Param params body requests.CreateAccountRequest true "Account registration data"
 // @Success 201 {object} responses.AccountResponse
 // @Failure 400 {object} responses.Error
 // @Router /posts [post]
@@ -64,9 +64,9 @@ func (controller *AccountsController) Post(c echo.Context) error {
 func (controller *AccountsController) Get(c echo.Context) error {
 
 	accountId := c.Param("id")
-	accountUuid := uuid.FromStringOrNil(accountId)
+	accountUuid, err := uuid.Parse(accountId)
 
-	if accountUuid == uuid.Nil {
+	if err != nil {
 		return responses.ErrorResponse(c, http.StatusBadRequest, "invalid account id")
 	}
 

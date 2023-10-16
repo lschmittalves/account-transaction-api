@@ -2,7 +2,7 @@ package account
 
 import (
 	"account-transaction-api/internal/models"
-	uuid "github.com/satori/go.uuid"
+	"github.com/google/uuid"
 )
 
 func (s *Service) GetById(id uuid.UUID) (acc *models.Account, err error) {

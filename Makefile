@@ -14,5 +14,8 @@ test:
 build-docker: build
 	docker build . -t account-transaction-api
 
-run-docker:
-	docker compose up
+run-docker: build-docker
+	docker-compose up
+
+stop-docker:
+	docker-compose down

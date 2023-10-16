@@ -5,23 +5,18 @@ import (
 	"account-transaction-api/internal/db/seeders"
 	"account-transaction-api/internal/models"
 	"fmt"
-	"go.uber.org/zap"
-	"time"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-)
-
-var (
-	DB  *gorm.DB
-	err error
+	"log"
+	"time"
 )
 
 func Init(cfg *config.Config) *gorm.DB {
 
-	var db = DB
+	var err error
+	var db *gorm.DB
 
-	zap.L().Info("initializing db connection for " + cfg.DB.Driver + "!")
+	log.Printf("initializing db connection for " + cfg.DB.Driver + "!")
 
 	if cfg.DB.Driver == "postgres" { // POSTGRES
 		db, err = gorm.Open("postgres",
@@ -43,17 +38,21 @@ func Init(cfg *config.Config) *gorm.DB {
 	db.DB().SetMaxOpenConns(cfg.DB.MaxConnections)
 	db.DB().SetConnMaxLifetime(time.Duration(cfg.DB.MaxLifetime) * time.Second)
 
+	migration(db)
+
 	// seeder
 	userSeeder := seeders.NewOperationTypeSeeder(db)
 	userSeeder.SetDefaultOperationTypes()
 
-	migration()
-
 	return db
 }
 
-func migration() {
-	DB.AutoMigrate(&models.OperationType{})
-	DB.AutoMigrate(&models.Account{})
-	DB.AutoMigrate(&models.Transaction{})
+func migration(db *gorm.DB) {
+	db.AutoMigrate(&models.OperationType{})
+	db.AutoMigrate(&models.Account{})
+	db.AutoMigrate(&models.Transaction{})
+
+	db.Model(&models.Transaction{}).AddForeignKey("account_id", "accounts(id)", "RESTRICT", "RESTRICT")
+	db.Model(&models.Transaction{}).AddForeignKey("operation_type_id", "operation_types(id)", "RESTRICT", "RESTRICT")
+
 }

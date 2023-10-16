@@ -5,7 +5,12 @@ import (
 	"account-transaction-api/internal/api"
 	"account-transaction-api/internal/config"
 	"fmt"
+	"os"
 )
+
+func init() {
+	os.Setenv("TZ", "Etc/UTC")
+}
 
 func main() {
 	cfg := config.NewConfig()

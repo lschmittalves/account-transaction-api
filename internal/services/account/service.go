@@ -2,8 +2,8 @@ package account
 
 import (
 	"account-transaction-api/internal/models"
+	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
-	uuid "github.com/satori/go.uuid"
 )
 
 type ServiceWrapper interface {

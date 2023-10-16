@@ -2,7 +2,7 @@ package responses
 
 import (
 	"account-transaction-api/internal/models"
-	uuid "github.com/satori/go.uuid"
+	"github.com/google/uuid"
 )
 
 type AccountResponse struct {
@@ -12,5 +12,5 @@ type AccountResponse struct {
 }
 
 func NewAccountResponse(account *models.Account) *AccountResponse {
-	return &AccountResponse{AccountId: account.ID, Name: account.Name, DocumentNumber: account.TaxDocument}
+	return &AccountResponse{AccountId: account.Id, Name: account.Name, DocumentNumber: account.TaxDocument}
 }

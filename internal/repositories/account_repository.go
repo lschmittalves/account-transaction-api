@@ -2,7 +2,7 @@ package repositories
 
 import (
 	"account-transaction-api/internal/models"
-	uuid "github.com/satori/go.uuid"
+	"github.com/google/uuid"
 
 	"github.com/jinzhu/gorm"
 )

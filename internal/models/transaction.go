@@ -1,10 +1,10 @@
 package models
 
-import uuid "github.com/satori/go.uuid"
+import "github.com/google/uuid"
 
 type Transaction struct {
 	Base
-	Amount          uint64        `json:"amount" gorm:"not null"`
+	Amount          int64         `json:"amount" gorm:"not null"`
 	AccountId       uuid.UUID     `json:"account_id"`
 	Account         Account       `json:"-" gorm:"foreignkey:AccountId"`
 	OperationTypeId uuid.UUID     `json:"operation_type_id"`
