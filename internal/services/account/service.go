@@ -9,6 +9,7 @@ import (
 type ServiceWrapper interface {
 	Create(account *models.Account) (*models.Account, error)
 	GetById(id uuid.UUID) (*models.Account, error)
+	Exists(doc string) bool
 }
 
 type Service struct {

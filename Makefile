@@ -2,7 +2,7 @@ get-docs:
 	go get -u github.com/swaggo/swag/cmd/swag
 
 docs: get-docs
-	swag init --dir cmd/api --parseDependency --output docs
+	swag init -g cmd/api/main.go --output docs/account-transaction-api
 
 build:
 	go mod tidy

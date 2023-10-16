@@ -29,7 +29,7 @@ func NewAccountsController(echo *echo.Echo, db *gorm.DB) *AccountsController {
 // @Param params body requests.CreateAccountRequest true "Account registration data"
 // @Success 201 {object} responses.AccountResponse
 // @Failure 400 {object} responses.Error
-// @Router /posts [post]
+// @Router /accounts [post]
 func (controller *AccountsController) Post(c echo.Context) error {
 	createAccountRequest := new(requests.CreateAccountRequest)
 
@@ -58,9 +58,11 @@ func (controller *AccountsController) Post(c echo.Context) error {
 // @ID account-get
 // @Tags Account Actions
 // @Produce json
+// @Param id path string true "Account UUID"
 // @Success 200 {object} responses.AccountResponse
+// @NoContent 204
 // @Failure 400 {object} responses.Error
-// @Router /posts [get]
+// @Router /accounts/{id} [get]
 func (controller *AccountsController) Get(c echo.Context) error {
 
 	accountId := c.Param("id")
@@ -76,7 +78,7 @@ func (controller *AccountsController) Get(c echo.Context) error {
 		c.Logger().Errorf("error retrieving account %s, err: %v", accountUuid, err)
 		return responses.Response(c, http.StatusNoContent, nil)
 	} else if acc != nil {
-		return responses.Response(c, http.StatusOK, acc)
+		return responses.Response(c, http.StatusOK, responses.NewAccountResponse(acc))
 	}
 
 	return responses.Response(c, http.StatusNoContent, nil)

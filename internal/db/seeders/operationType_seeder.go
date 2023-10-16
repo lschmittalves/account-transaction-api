@@ -33,7 +33,7 @@ func (seeder *OperationTypeSeeder) SetDefaultOperationTypes() {
 	}
 
 	for key, value := range operations {
-		op := models.OperationType{}
+		var op = &models.OperationType{}
 		r := seeder.DB.Where("id = ? ", key).First(op)
 		if errors.Is(r.Error, gorm.ErrRecordNotFound) {
 			op.Id, _ = uuid.Parse(key)

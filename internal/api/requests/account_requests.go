@@ -17,7 +17,7 @@ func (bp CreateAccountRequest) Validate() error {
 		validation.Field(&bp.DocumentNumber,
 			validation.Required,
 			validation.Length(5, 50),
-			validation.Match(regexp.MustCompile("^[0-9]*$")).Error("document shall contains only numbers")),
+			validation.Match(regexp.MustCompile("^[0-9]*$")).Error("document only accept numbers")),
 
 		validation.Field(&bp.Name,
 			validation.Required,
