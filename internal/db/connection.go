@@ -7,7 +7,8 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"log"
+	"go.uber.org/zap"
+	"moul.io/zapgorm"
 	"time"
 )
 
@@ -16,7 +17,7 @@ func Init(cfg *config.Config) *gorm.DB {
 	var err error
 	var db *gorm.DB
 
-	log.Printf("initializing db connection for " + cfg.DB.Driver + "!")
+	zap.L().Info("initializing db connection for " + cfg.DB.Driver + "!")
 
 	if cfg.DB.Driver == "postgres" { // POSTGRES
 		db, err = gorm.Open("postgres",
@@ -33,6 +34,7 @@ func Init(cfg *config.Config) *gorm.DB {
 		panic(fmt.Sprintf("db driver %s not supported", cfg.DB.Driver))
 	}
 
+	db.SetLogger(zapgorm.New(zap.L().Named("gorm")))
 	db.LogMode(cfg.DB.LogMode)
 	db.DB().SetMaxIdleConns(cfg.DB.MaxIdleConnections)
 	db.DB().SetMaxOpenConns(cfg.DB.MaxConnections)

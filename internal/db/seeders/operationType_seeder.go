@@ -5,7 +5,7 @@ import (
 	"errors"
 	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
-	"log"
+	"go.uber.org/zap"
 )
 
 type OperationTypeSeeder struct {
@@ -39,7 +39,7 @@ func (seeder *OperationTypeSeeder) SetDefaultOperationTypes() {
 			op.Id, _ = uuid.Parse(key)
 			op.Description = value["description"]
 
-			log.Printf("seeding operation type %v", op)
+			zap.L().Info("seeding operation type " + op.Description)
 
 			seeder.DB.Create(&op)
 		}

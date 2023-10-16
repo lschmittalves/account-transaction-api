@@ -3,10 +3,12 @@ package main
 import (
 	"account-transaction-api/internal/api"
 	"account-transaction-api/internal/config"
+	"go.uber.org/zap"
 	"os"
 )
 
 func init() {
+	zap.ReplaceGlobals(zap.Must(zap.NewProduction()))
 	os.Setenv("TZ", "Etc/UTC")
 }
 
