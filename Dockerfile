@@ -18,4 +18,4 @@ RUN chmod +x /wait
 CMD swag init -g cmd/main.go\
   && /wait \
   && go run migrations/entry.go --verbose \
-  && CompileDaemon --build="go build cmd/main.go"  --command="./main" --color
+  && CompileDaemon --build="go build cmd/api/main.go"  --command="./main" --color

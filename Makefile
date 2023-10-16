@@ -1,20 +1,18 @@
-lint_docker_compose_file = "./development/golangci_lint/docker-compose.yml"
+get-docs:
+	go get -u github.com/swaggo/swag/cmd/swag
 
-lint-build:
-	@echo "🌀 ️container are building..."
-	@docker-compose --file=$(lint_docker_compose_file) build -q
-	@echo "✔  ️container built"
+docs: get-docs
+	swag init --dir cmd/api --parseDependency --output docs
 
-lint-check:
-	@echo "🌀️ code linting..."
-	@docker-compose --file=$(lint_docker_compose_file) run --rm echo-golinter golangci-lint run \
- 		&& echo "✔️  checked without errors" \
- 		|| echo "☢️  code style issues found"
+build:
+	go mod tidy
+	go build -o bin/account-transaction-api cmd/api/main.go
 
+test:
+	go test -v ./test/...
 
-lint-fix:
-	@echo "🌀 ️code fixing..."
-	@docker-compose --file=$(lint_docker_compose_file) run --rm echo-golinter golangci-lint run --fix \
-		&& echo "✔️  fixed without errors" \
-		|| (echo "⚠️️  you need to fix above issues manually" && exit 1)
-	@echo "⚠️️ run \"make lint-check\" again to check what did not fix yet"
+build-docker: build
+	docker build . -t account-transaction-api
+
+run-docker:
+	docker compose up

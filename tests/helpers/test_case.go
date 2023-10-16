@@ -1,7 +1,7 @@
 package helpers
 
 import (
-	"account-transaction-api/server"
+	"account-transaction-api/internal/api"
 	"encoding/json"
 	"github.com/labstack/echo/v4"
 	mocket "github.com/selvatico/go-mocket"
@@ -15,7 +15,7 @@ type TestCase struct {
 	TestName    string
 	Request     Request
 	RequestBody interface{}
-	HandlerFunc func(s *server.Server, c echo.Context) error
+	HandlerFunc func(s *api.Server, c echo.Context) error
 	QueryMock   *QueryMock
 	Expected    ExpectedResponse
 }
@@ -43,7 +43,7 @@ type ExpectedResponse struct {
 	BodyPart   string
 }
 
-func PrepareContextFromTestCase(s *server.Server, test TestCase) (c echo.Context, recorder *httptest.ResponseRecorder) {
+func PrepareContextFromTestCase(s *api.Server, test TestCase) (c echo.Context, recorder *httptest.ResponseRecorder) {
 	requestJson, _ := json.Marshal(test.RequestBody)
 	request := httptest.NewRequest(test.Request.Method, test.Request.Url, strings.NewReader(string(requestJson)))
 	request.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
