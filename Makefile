@@ -8,8 +8,8 @@ build: docs
 	go mod tidy
 	go build -o bin/account-transaction-api cmd/api/main.go
 
-test:
-	go test -v ./test/...
+test: mocks
+	go test ./tests/... -v
 
 build-docker: build
 	docker build . -t account-transaction-api
@@ -19,3 +19,11 @@ run-docker: build-docker
 
 stop-docker:
 	docker-compose down
+
+mocks:
+	go install go.uber.org/mock/mockgen@latest
+	mockgen -source=internal/repositories/account_repository.go -destination=tests/mocks/repositories/account.go
+	mockgen -source=internal/repositories/operationType_repository.go -destination=tests/mocks/repositories/operationType.go
+	mockgen -source=internal/repositories/transaction_repository.go -destination=tests/mocks/repositories/transaction.go
+	mockgen -source=internal/cache/cache.go -destination=tests/mocks/clients/cache.go
+	go mod tidy
