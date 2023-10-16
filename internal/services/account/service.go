@@ -2,20 +2,18 @@ package account
 
 import (
 	"account-transaction-api/internal/models"
-	"github.com/google/uuid"
-	"github.com/jinzhu/gorm"
+	"account-transaction-api/internal/repositories"
 )
 
-type ServiceWrapper interface {
+type Service interface {
 	Create(account *models.Account) (*models.Account, error)
-	GetById(id uuid.UUID) (*models.Account, error)
-	Exists(doc string) bool
 }
 
-type Service struct {
-	DB *gorm.DB
+type ServiceWrapper struct {
+	accountReader repositories.AccountReader
+	accountWriter repositories.AccountWriter
 }
 
-func NewAccountService(db *gorm.DB) *Service {
-	return &Service{DB: db}
+func NewAccountService(reader repositories.AccountReader, writer repositories.AccountWriter) *ServiceWrapper {
+	return &ServiceWrapper{accountReader: reader, accountWriter: writer}
 }

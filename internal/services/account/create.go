@@ -5,11 +5,10 @@ import (
 	"fmt"
 )
 
-func (s *Service) Create(acc *models.Account) (*models.Account, error) {
+func (s *ServiceWrapper) Create(acc *models.Account) (*models.Account, error) {
 
-	if s.Exists(acc.TaxDocument) {
+	if s.accountReader.ExistsDocument(acc.TaxDocument) {
 		return nil, fmt.Errorf("account with document %s allready exists", acc.TaxDocument)
 	}
-
-	return acc, s.DB.Create(acc).Error
+	return acc, s.accountWriter.Add(acc)
 }

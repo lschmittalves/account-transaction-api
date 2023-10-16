@@ -3,8 +3,12 @@ package api
 import (
 	_ "account-transaction-api/docs"
 	"account-transaction-api/internal/api/controllers"
+	"account-transaction-api/internal/cache"
 	"account-transaction-api/internal/config"
 	"account-transaction-api/internal/db"
+	"account-transaction-api/internal/repositories"
+	accountService "account-transaction-api/internal/services/account"
+	transactionService "account-transaction-api/internal/services/transactions"
 	"github.com/brpaz/echozap"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -14,32 +18,35 @@ import (
 
 func Run(cfg *config.Config) {
 
-	echo := echo.New()
+	e := echo.New()
 	db := db.Init(cfg)
+	c := cache.Init(cfg)
 
-	echo.Use(echozap.ZapLogger(zap.L()))
+	e.Use(echozap.ZapLogger(zap.L()))
 
-	echo.Use(middleware.Recover())
-	echo.Use(middleware.CORS())
+	e.Use(middleware.Recover())
+	e.Use(middleware.CORS())
 
-	echo.GET("/swagger/*", echoSwagger.WrapHandler)
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	// health
-	healthController := controllers.NewHealthController(echo, db)
-	echo.GET("/", healthController.HealthCheck)
-	echo.GET("/health", healthController.HealthCheck)
+	healthController := controllers.NewHealthController(e, db)
+	e.GET("/", healthController.HealthCheck)
+	e.GET("/health", healthController.HealthCheck)
 
 	// accounts
-	accountsController := controllers.NewAccountsController(echo, db)
-	echo.POST("/accounts", accountsController.Post)
-	echo.GET("/accounts/:id", accountsController.Get)
+	accountRepository := repositories.NewAccountRepository(db)
+	accountsController := controllers.NewAccountsController(e, accountService.NewAccountService(accountRepository, accountRepository), accountRepository)
+	e.POST("/accounts", accountsController.Post)
+	e.GET("/accounts/:id", accountsController.Get)
 
 	// transactions
-	//transactionController := controllers.NewTransactionController(server)
-	//server.Echo.POST("/transactions", transactionController.Post)
-	//server.Echo.GET("/transactions/:id", transactionController.Get)
+	operationsRepository := repositories.NewOperationTypeRepository(db)
+	transactionRepository := repositories.NewTransactionRepository(db, c)
+	transactionController := controllers.NewTransactionsController(e, transactionService.NewTransactionService(accountRepository, operationsRepository, transactionRepository))
+	e.POST("/transactions", transactionController.Post)
 
-	err := echo.Start(":" + cfg.HTTP.Port)
+	err := e.Start(":" + cfg.HTTP.Port)
 	if err != nil {
 		panic("Port already used")
 	}

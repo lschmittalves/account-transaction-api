@@ -1,23 +1,30 @@
 package repositories
 
 import (
+	"account-transaction-api/internal/cache"
 	"account-transaction-api/internal/models"
+	"context"
+	"fmt"
 	"github.com/google/uuid"
 
 	"github.com/jinzhu/gorm"
 )
 
-type TransactionRepositoryQ interface {
-	GetById(account *models.Transaction, id uuid.UUID)
-	Add(account *models.Transaction)
+type TransactionReader interface {
+	GetById(transaction *models.Transaction, id uuid.UUID)
+}
+
+type TransactionWriter interface {
+	Add(t *models.Transaction) error
 }
 
 type TransactionRepository struct {
-	DB *gorm.DB
+	DB    *gorm.DB
+	cache cache.Cache
 }
 
-func NewTransactionRepository(db *gorm.DB) *TransactionRepository {
-	return &TransactionRepository{DB: db}
+func NewTransactionRepository(db *gorm.DB, cache cache.Cache) *TransactionRepository {
+	return &TransactionRepository{DB: db, cache: cache}
 }
 
 func (r *TransactionRepository) GetById(t *models.Transaction, id uuid.UUID) error {
@@ -26,12 +33,15 @@ func (r *TransactionRepository) GetById(t *models.Transaction, id uuid.UUID) err
 
 func (r *TransactionRepository) Add(t *models.Transaction) error {
 
+	ctx := context.Background()
+	cacheId := fmt.Sprintf("%s/%s/%d", t.AccountId, t.OperationTypeId, t.Amount)
+
+	if !r.cache.SetEx(ctx, cache.TransactionLockKeyPattern, cacheId) {
+		return fmt.Errorf("transaction %s has been sent allready", cacheId)
+	}
+
 	if err := r.DB.Create(t).Error; err != nil {
 		return err
 	}
-	if err := r.DB.Save(t).Error; err != nil {
-		return err
-	}
-
 	return nil
 }

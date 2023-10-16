@@ -3,20 +3,22 @@ package controllers
 import (
 	"account-transaction-api/internal/api/requests"
 	"account-transaction-api/internal/api/responses"
+	"account-transaction-api/internal/models"
+	"account-transaction-api/internal/repositories"
 	accountService "account-transaction-api/internal/services/account"
 	"github.com/google/uuid"
-	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )
 
 type AccountsController struct {
-	Echo *echo.Echo
-	DB   *gorm.DB
+	echo    *echo.Echo
+	service accountService.Service
+	reader  repositories.AccountReader
 }
 
-func NewAccountsController(echo *echo.Echo, db *gorm.DB) *AccountsController {
-	return &AccountsController{Echo: echo, DB: db}
+func NewAccountsController(echo *echo.Echo, service accountService.Service, reader repositories.AccountReader) *AccountsController {
+	return &AccountsController{echo: echo, service: service, reader: reader}
 }
 
 // Post godoc
@@ -41,9 +43,7 @@ func (controller *AccountsController) Post(c echo.Context) error {
 		return responses.ErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
 
-	service := accountService.NewAccountService(controller.DB)
-
-	if acc, err := service.Create(createAccountRequest.ToModel()); err != nil {
+	if acc, err := controller.service.Create(createAccountRequest.ToModel()); err != nil {
 		c.Logger().Errorf("error creating account, err: %v", err)
 		return responses.ErrorResponse(c, http.StatusBadRequest, "Unable to create account, try again in a few moments")
 	} else {
@@ -72,14 +72,11 @@ func (controller *AccountsController) Get(c echo.Context) error {
 		return responses.ErrorResponse(c, http.StatusBadRequest, "invalid account id")
 	}
 
-	service := accountService.NewAccountService(controller.DB)
-
-	if acc, err := service.GetById(accountUuid); err != nil {
+	var acc = &models.Account{}
+	if err := controller.reader.GetById(acc, accountUuid); err != nil {
 		c.Logger().Errorf("error retrieving account %s, err: %v", accountUuid, err)
 		return responses.Response(c, http.StatusNoContent, nil)
-	} else if acc != nil {
-		return responses.Response(c, http.StatusOK, responses.NewAccountResponse(acc))
 	}
 
-	return responses.Response(c, http.StatusNoContent, nil)
+	return responses.Response(c, http.StatusOK, responses.NewAccountResponse(acc))
 }

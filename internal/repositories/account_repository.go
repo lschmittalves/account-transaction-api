@@ -7,9 +7,14 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type AccountRepositoryQ interface {
-	GetById(account *models.Account, id uuid.UUID)
-	Add(account *models.Account)
+type AccountWriter interface {
+	Add(account *models.Account) error
+}
+
+type AccountReader interface {
+	GetById(account *models.Account, id uuid.UUID) error
+	ExistsDocument(document string) bool
+	ExistsId(id uuid.UUID) bool
 }
 
 type AccountRepository struct {
@@ -21,15 +26,22 @@ func NewAccountRepository(db *gorm.DB) *AccountRepository {
 }
 
 func (r *AccountRepository) GetById(a *models.Account, id uuid.UUID) error {
-	return r.DB.Where("id = ? ", id).Find(a).Error
+	return r.DB.Where("id = ? ", id).First(a).Error
+}
+
+func (r *AccountRepository) ExistsDocument(document string) bool {
+	var acc = &models.Account{}
+	return r.DB.Where("tax_document = ? ", document).First(acc).Error == nil
+}
+
+func (r *AccountRepository) ExistsId(id uuid.UUID) bool {
+	var acc = &models.Account{}
+	return r.DB.Where("id = ? ", id).First(acc).Error == nil
 }
 
 func (r *AccountRepository) Add(a *models.Account) error {
 
 	if err := r.DB.Create(a).Error; err != nil {
-		return err
-	}
-	if err := r.DB.Save(a).Error; err != nil {
 		return err
 	}
 

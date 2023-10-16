@@ -7,8 +7,8 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type OperationTypeRepositoryQ interface {
-	GetById(account *models.Account, id uuid.UUID)
+type OperationTypeReader interface {
+	GetById(op *models.OperationType, id uuid.UUID) error
 }
 
 type OperationTypeRepository struct {
@@ -19,6 +19,6 @@ func NewOperationTypeRepository(db *gorm.DB) *OperationTypeRepository {
 	return &OperationTypeRepository{DB: db}
 }
 
-func (r *OperationTypeRepository) GetById(opType *models.OperationType, id uuid.UUID) error {
-	return r.DB.Where("id = ? ", id).Find(opType).Error
+func (r *OperationTypeRepository) GetById(op *models.OperationType, id uuid.UUID) error {
+	return r.DB.Where("id = ? ", id).First(op).Error
 }
