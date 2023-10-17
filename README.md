@@ -20,7 +20,7 @@ cache configured that locks each transaction with a small TTL in order to avoid 
 
 ## Usage
 1. Run your application using the command in the terminal:
-    `docker-compose up` or `make run-docker` 
+    `docker-compose up` or `make docker-start` 
 2. Browse to localhost:7788/swagger/index.html. You will be able to access the Swagger 2.0 API documents.
 3. Using the API documentation, make requests to register an account and register transactions.
 4. These are the default operation types that can be used to register the new transactions

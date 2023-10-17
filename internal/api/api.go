@@ -10,6 +10,7 @@ import (
 	accountService "account-transaction-api/internal/services/account"
 	transactionService "account-transaction-api/internal/services/transactions"
 	"github.com/brpaz/echozap"
+	"github.com/labstack/echo-contrib/echoprometheus"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	echoSwagger "github.com/swaggo/echo-swagger"
@@ -27,7 +28,12 @@ func Run(cfg *config.Config) {
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
 
+	// swagger
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
+
+	// metrics
+	e.Use(echoprometheus.NewMiddleware("api"))
+	e.GET("/metrics", echoprometheus.NewHandler())
 
 	// health
 	healthController := controllers.NewHealthController(e, db)

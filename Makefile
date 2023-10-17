@@ -14,10 +14,10 @@ test: mocks
 build-docker: build
 	docker build . -t account-transaction-api
 
-run-docker: build-docker
+docker-start: build-docker
 	docker-compose up
 
-stop-docker:
+docker-stop:
 	docker-compose down
 
 mocks:
