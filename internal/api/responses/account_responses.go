@@ -12,6 +12,7 @@ type AccountResponse struct {
 	CreatedAt      time.Time `json:"created_at" example:"2023-10-16T04:57:33.299641Z"`
 	UpdatedAt      time.Time `json:"updated_at" example:"2023-10-16T04:57:33.299641Z"`
 	Name           string    `json:"name" example:"John Doe"`
+	CreditLimit    int64     `json:"creditLimit" example:"100"`
 }
 
 func NewAccountResponse(account *models.Account) *AccountResponse {
@@ -19,6 +20,7 @@ func NewAccountResponse(account *models.Account) *AccountResponse {
 		AccountId:      account.Id,
 		Name:           account.Name,
 		DocumentNumber: account.TaxDocument,
+		CreditLimit:    account.CreditLimit,
 		CreatedAt:      account.CreatedAt,
 		UpdatedAt:      account.UpdatedAt}
 }

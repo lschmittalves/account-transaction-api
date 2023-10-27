@@ -25,5 +25,6 @@ mocks:
 	mockgen -source=internal/repositories/account_repository.go -destination=tests/mocks/repositories/account.go
 	mockgen -source=internal/repositories/operationType_repository.go -destination=tests/mocks/repositories/operationType.go
 	mockgen -source=internal/repositories/transaction_repository.go -destination=tests/mocks/repositories/transaction.go
+	mockgen -source=internal/services/account/service.go -destination=tests/mocks/services/account/service.go
 	mockgen -source=internal/cache/cache.go -destination=tests/mocks/clients/cache.go
 	go mod tidy

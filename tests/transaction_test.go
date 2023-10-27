@@ -6,6 +6,7 @@ import (
 	transacionService "account-transaction-api/internal/services/transactions"
 	mock_cache "account-transaction-api/tests/mocks/clients"
 	mock_repositories "account-transaction-api/tests/mocks/repositories"
+	mock_account "account-transaction-api/tests/mocks/services/account"
 	"errors"
 	"fmt"
 	"github.com/google/uuid"
@@ -30,6 +31,7 @@ func TestTransactionRegister_Success(t *testing.T) {
 	accReader := mock_repositories.NewMockAccountReader(ctrl)
 	opReader := mock_repositories.NewMockOperationTypeReader(ctrl)
 	tWriter := mock_repositories.NewMockTransactionWriter(ctrl)
+	accService := mock_account.NewMockService(ctrl)
 
 	accReader.EXPECT().ExistsId(gomock.Eq(accountId)).Return(true).Times(1)
 
@@ -45,7 +47,9 @@ func TestTransactionRegister_Success(t *testing.T) {
 		return nil
 	}).Times(1)
 
-	service := transacionService.NewTransactionService(accReader, opReader, tWriter)
+	accService.EXPECT().UpdateCreditLimit(gomock.Eq(accountId), gomock.Eq(int64(10))).Return(nil).Times(1)
+
+	service := transacionService.NewTransactionService(accReader, accService, opReader, tWriter)
 
 	tr, err := service.Create(newTransaction)
 
@@ -71,6 +75,7 @@ func TestTransactionRegister_Debit(t *testing.T) {
 	accReader := mock_repositories.NewMockAccountReader(ctrl)
 	opReader := mock_repositories.NewMockOperationTypeReader(ctrl)
 	tWriter := mock_repositories.NewMockTransactionWriter(ctrl)
+	accService := mock_account.NewMockService(ctrl)
 
 	accReader.EXPECT().ExistsId(gomock.Any()).Return(true).Times(1)
 
@@ -83,7 +88,9 @@ func TestTransactionRegister_Debit(t *testing.T) {
 
 	tWriter.EXPECT().Add(gomock.Eq(newTransaction)).Return(nil).Times(1)
 
-	service := transacionService.NewTransactionService(accReader, opReader, tWriter)
+	accService.EXPECT().UpdateCreditLimit(gomock.Eq(accountId), gomock.Eq(int64(-10))).Return(nil).Times(1)
+
+	service := transacionService.NewTransactionService(accReader, accService, opReader, tWriter)
 
 	tr, err := service.Create(newTransaction)
 
@@ -106,13 +113,14 @@ func TestTransactionRegister_AccountNotFound(t *testing.T) {
 	accReader := mock_repositories.NewMockAccountReader(ctrl)
 	opReader := mock_repositories.NewMockOperationTypeReader(ctrl)
 	tWriter := mock_repositories.NewMockTransactionWriter(ctrl)
+	accService := mock_account.NewMockService(ctrl)
 
 	accReader.EXPECT().ExistsId(gomock.Eq(accountId)).Return(false).Times(1)
-
 	opReader.EXPECT().GetById(gomock.Any(), gomock.Any()).Times(0)
 	tWriter.EXPECT().Add(gomock.Eq(newTransaction)).Times(0)
+	accService.EXPECT().UpdateCreditLimit(gomock.Any(), gomock.Any()).Times(0)
 
-	service := transacionService.NewTransactionService(accReader, opReader, tWriter)
+	service := transacionService.NewTransactionService(accReader, accService, opReader, tWriter)
 
 	tr, err := service.Create(newTransaction)
 
@@ -136,13 +144,14 @@ func TestTransactionRegister_OperationNotFound(t *testing.T) {
 	accReader := mock_repositories.NewMockAccountReader(ctrl)
 	opReader := mock_repositories.NewMockOperationTypeReader(ctrl)
 	tWriter := mock_repositories.NewMockTransactionWriter(ctrl)
+	accService := mock_account.NewMockService(ctrl)
 
 	accReader.EXPECT().ExistsId(gomock.Any()).Return(true).Times(1)
-
 	opReader.EXPECT().GetById(gomock.Any(), gomock.Any()).Return(errors.New("")).Times(1)
 	tWriter.EXPECT().Add(gomock.Eq(newTransaction)).Times(0)
+	accService.EXPECT().UpdateCreditLimit(gomock.Any(), gomock.Any()).Times(0)
 
-	service := transacionService.NewTransactionService(accReader, opReader, tWriter)
+	service := transacionService.NewTransactionService(accReader, accService, opReader, tWriter)
 
 	tr, err := service.Create(newTransaction)
 

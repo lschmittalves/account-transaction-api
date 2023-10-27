@@ -20,6 +20,9 @@ func (s *ServiceWrapper) Create(t *models.Transaction) (*models.Transaction, err
 		t.Amount = t.Amount * -1
 	}
 
-	return t, s.transactionWriter.Add(t)
+	if err := s.accountService.UpdateCreditLimit(t.AccountId, t.Amount); err != nil {
+		return nil, err
+	}
 
+	return t, s.transactionWriter.Add(t)
 }

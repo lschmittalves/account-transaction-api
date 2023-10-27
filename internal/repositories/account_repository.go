@@ -9,6 +9,7 @@ import (
 
 type AccountWriter interface {
 	Add(account *models.Account) error
+	Update(account *models.Account) error
 }
 
 type AccountReader interface {
@@ -45,5 +46,11 @@ func (r *AccountRepository) Add(a *models.Account) error {
 		return err
 	}
 
+	return nil
+}
+
+func (r *AccountRepository) Update(account *models.Account) error {
+
+	r.DB.Save(&account)
 	return nil
 }
