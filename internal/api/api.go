@@ -42,14 +42,15 @@ func Run(cfg *config.Config) {
 
 	// accounts
 	accountRepository := repositories.NewAccountRepository(db)
-	accountsController := controllers.NewAccountsController(e, accountService.NewAccountService(accountRepository, accountRepository), accountRepository)
+	accService := accountService.NewAccountService(accountRepository, accountRepository)
+	accountsController := controllers.NewAccountsController(e, accService, accountRepository)
 	e.POST("/accounts", accountsController.Post)
 	e.GET("/accounts/:id", accountsController.Get)
 
 	// transactions
 	operationsRepository := repositories.NewOperationTypeRepository(db)
 	transactionRepository := repositories.NewTransactionRepository(db, c)
-	transactionController := controllers.NewTransactionsController(e, transactionService.NewTransactionService(accountRepository, operationsRepository, transactionRepository))
+	transactionController := controllers.NewTransactionsController(e, transactionService.NewTransactionService(accountRepository, accService, operationsRepository, transactionRepository))
 	e.POST("/transactions", transactionController.Post)
 
 	err := e.Start(":" + cfg.HTTP.Port)

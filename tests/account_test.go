@@ -64,3 +64,34 @@ func TestAccountCreation_DuplicatedDocument(t *testing.T) {
 	assert.Errorf(t, err, fmt.Sprintf("account with document %s allready exists", accountDoc))
 	assert.Nil(t, acc)
 }
+
+func TestAccountCreditLimit_AccountWithinLimits(t *testing.T) {
+
+	accountId, _ := uuid.Parse("b18b834e-04d2-4361-8cd7-efa65021b9d8")
+	accountDoc := "123456"
+	acc := models.Account{
+		Base: models.Base{
+			Id: accountId,
+		},
+		TaxDocument: accountDoc,
+		Name:        "John Doe",
+		CreditLimit: 100,
+	}
+	var updtAcc *models.Account
+
+	ctrl := gomock.NewController(t)
+
+	accReader := mock_repositories.NewMockAccountReader(ctrl)
+	accWriter := mock_repositories.NewMockAccountWriter(ctrl)
+
+	accReader.EXPECT().GetById(gomock.Any(), gomock.Eq(accountId)).SetArg(0, acc).Return(nil).Times(1)
+	accWriter.EXPECT().Update(gomock.Any()).Do(func(acc *models.Account) {
+		updtAcc = acc
+	}).Return(nil).Times(1)
+
+	service := accountService.NewAccountService(accReader, accWriter)
+
+	err := service.UpdateCreditLimit(accountId, 100)
+	assert.Nil(t, err)
+	assert.Equal(t, int64(200), updtAcc.CreditLimit)
+}
