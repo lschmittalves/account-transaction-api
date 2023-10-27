@@ -15,7 +15,7 @@ build-docker: build
 	docker build . -t account-transaction-api
 
 docker-start: build-docker
-	docker-compose up
+	docker-compose up --build
 
 docker-stop:
 	docker-compose down
